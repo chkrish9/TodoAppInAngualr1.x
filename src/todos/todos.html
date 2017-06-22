@@ -4,7 +4,7 @@
 
     <form ng-submit="createTask()">
         <input type="text" class="form-control todos_create-input" placeholder="what you want to do today.?" ng-model="createNewTask"/>
-        <button class="btn btn-success todos_create-button">Create</button>
+        <button class="btn btn-success todos_create-button" ng-disabled="!createNewTask">Create</button>
     </form>
     
     <table class="table table-striped table-hover">

@@ -5,7 +5,16 @@ var router = express.Router();
 moogoose.Promise = require('bluebird');
 
 router.get('/',function(req,res){
-    res.send("HELLO FROM SERVER TODOS");
+    Todo.find().then(
+        function(respond){
+            res.send({ todos: respond });
+        },
+        function(err){
+            if(err){
+                console.log(err);
+            }
+        }
+    );
 });
 
 router.post('/',function(req, res){
@@ -19,6 +28,34 @@ router.post('/',function(req, res){
             console.log(err);
         }
     }
+    );
+});
+
+router.put('/:id',function(req,res){
+    var id=req.params.id;
+    Todo.update({ _id : moogoose.Types.ObjectId(id) }, { $set : { task : req.body.task } }).then(
+        function(respond){
+            res.send(respond._doc);
+        },
+        function(err){
+            if(err){
+                console.log(err);
+            }
+        }
+    );
+});
+
+router.delete('/:id',function(req,res){
+    var id=req.params.id;
+    Todo.remove({ _id : moogoose.Types.ObjectId(id) }).then(
+        function(respond){
+            res.send("Deleted successfully");
+        },
+        function(err){
+            if(err){
+                console.log(err);
+            }
+        }
     );
 });
 module.exports = router;

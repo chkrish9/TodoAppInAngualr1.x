@@ -5,23 +5,25 @@ export default function($scope, todoFactory){
         hasInput: false
     };
 
-    $scope.todos = [
-        {
-            task: 'Wash dishes',
-            isCompleted: false,
-            isEditing: false            
-        },
-        {
-            task: 'Take dog to walk',
-            isCompleted: true,
-            isEditing: false
-        },
-        {
-            task: 'Clean the room',
-            isCompleted: false,
-            isEditing: false
-        }
-    ];
+    // $scope.todos = [
+    //     {
+    //         task: 'Wash dishes',
+    //         isCompleted: false,
+    //         isEditing: false            
+    //     },
+    //     {
+    //         task: 'Take dog to walk',
+    //         isCompleted: true,
+    //         isEditing: false
+    //     },
+    //     {
+    //         task: 'Clean the room',
+    //         isCompleted: false,
+    //         isEditing: false
+    //     }
+    // ];
+
+    todoFactory.getTask($scope);
 
     $scope.onCompletedTask = todo => {
         todo.isCompleted = ! todo.isCompleted;
@@ -47,7 +49,7 @@ export default function($scope, todoFactory){
     //     todo.task = todo.updatedValue;
     //     todo.isEditing = false;
     // };
-    $scope.updateTask = _.partial(todoFactory.updateTask);
+    $scope.updateTask = _.partial(todoFactory.updateTask, $scope);
 
     // $scope.$watch('createNewTask', val => {
     //     if(!val && params.hasInput){

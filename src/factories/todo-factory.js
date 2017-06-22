@@ -4,6 +4,12 @@ import _ from 'lodash';
 const todoFactory = angular.module("app.todoFactory",[]);
 
 todoFactory.factory('todoFactory', ($http) => {
+    function getTask($scope){
+        $http.get('/todos').then( response => {
+                $scope.todos = response.data.todos;
+            }
+        );
+    }
     function createTask($scope, params){
         $http.post('/todos', {
             task: $scope.createNewTask,
@@ -11,21 +17,34 @@ todoFactory.factory('todoFactory', ($http) => {
             isEditing: false
         }).then(response => {
             if(response.data){
-                alert("Successfully created :"+response.data.task);
+                //alert("Successfully created :"+response.data.task);
             }
-            params.hasInput = false;
+            getTask($scope);
+            //params.hasInput = false;
             $scope.createNewTask = '';
         });
         // params.hasInput = false;
         // $scope.createNewTask = '';
     }
 
-    function updateTask(todo){
-        todo.task = todo.updatedValue;
-        todo.isEditing = false;
+    function updateTask($scope, todo){
+        // todo.task = todo.updatedValue;
+        // todo.isEditing = false;
+        $http.put(`/todos/${todo._id}`,{ task : todo.updatedValue }).then(response => {
+            if(response.data){
+                alert("Successfully updaed :"+response.data.task);
+            }
+            getTask($scope);
+            todo.isEditing = false;
+        });
     }
     function deleteTask($scope, deletingTodo){
-         _.remove($scope.todos, todo => todo.task === deletingTodo.task);
+        $http.delete(`/todos/${deletingTodo._id}`).then(response => {
+             if(response.data){
+                getTask($scope);
+             }
+        });
+        // _.remove($scope.todos, todo => todo.task === deletingTodo.task);
     }
     function watchCreateNewTask(params, $scope, val){
         if(!val && params.hasInput){
@@ -42,6 +61,7 @@ todoFactory.factory('todoFactory', ($http) => {
         }
     }
     return{
+        getTask,
         createTask,
         updateTask,
         deleteTask,
