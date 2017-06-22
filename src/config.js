@@ -3,7 +3,7 @@ import uiRouter from 'angular-ui-router';
 
 import todosController from './todos/todos';
 
-import todoFactory from '../factories/todo-factory';
+import todoFactory from './factories/todo-factory';
 
 
 const app = angular.module('app',[uiRouter, todoFactory.name]);
@@ -20,7 +20,7 @@ app.config(($stateProvider, $urlRouterProvider, $locationProvider) => {
             .state('about', {
                 url: '/about',
                 template: require('./about/about.html')
-            })
+            });
     $locationProvider.html5Mode(true);
 });
 

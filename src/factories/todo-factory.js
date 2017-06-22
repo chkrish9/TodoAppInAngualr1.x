@@ -3,10 +3,21 @@ import _ from 'lodash';
 
 const todoFactory = angular.module("app.todoFactory",[]);
 
-todoFactory.factory('todoFactory', () => {
+todoFactory.factory('todoFactory', ($http) => {
     function createTask($scope, params){
-        params.hasInput = false;
-        $scope.createNewTask = '';
+        $http.post('/todos', {
+            task: $scope.createNewTask,
+            isCompleted: false,
+            isEditing: false
+        }).then(response => {
+            if(response.data){
+                alert("Successfully created :"+response.data.task);
+            }
+            params.hasInput = false;
+            $scope.createNewTask = '';
+        });
+        // params.hasInput = false;
+        // $scope.createNewTask = '';
     }
 
     function updateTask(todo){

@@ -4,7 +4,7 @@ export default function($scope, todoFactory){
     let params = {
         hasInput: false
     };
-    console.log(todoFactory.createTask);
+
     $scope.todos = [
         {
             task: 'Wash dishes',
